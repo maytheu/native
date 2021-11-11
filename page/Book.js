@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ScrollView,
   Text,
@@ -52,6 +52,19 @@ const Book = () => {
     'Zamfara',
   ];
 
+  const [f_name, setF_name] = useState('');
+  const [s_name, setS_name] = useState('');
+  const [email, setEmail] = useState('');
+  const [address, setAddres] = useState('');
+  const [phone, setPhone] = useState('');
+  const [organization, setOrganization] = useState('');
+  const [city, setCity] = useState('');
+  const [zip, setZip] = useState('');
+
+  const later = () => {};
+
+  const payment = () => {};
+
   return (
     <View style={styles.container}>
       <Header />
@@ -61,27 +74,52 @@ const Book = () => {
             <Text style={styles.header}>Personal Details</Text>
             <View style={{paddingBottom: 10}}>
               <Text style={styles.label}>First Name</Text>
-              <TextInput style={styles.input} />
+              <TextInput
+                style={styles.input}
+                value={f_name}
+                onChangeText={e => setF_name(e)}
+              />
             </View>
             <View style={{paddingBottom: 10}}>
               <Text style={styles.label}>Last Name</Text>
-              <TextInput style={styles.input} />
+              <TextInput
+                style={styles.input}
+                value={s_name}
+                onChangeText={e => setS_name(e)}
+              />
             </View>
             <View style={{paddingBottom: 10}}>
               <Text style={styles.label}>Email</Text>
-              <TextInput style={styles.input} />
+              <TextInput
+                style={styles.input}
+                value={email}
+                onChangeText={e => setEmail(e)}
+              />
             </View>
             <View style={{paddingBottom: 10}}>
               <Text style={styles.label}>Phone</Text>
-              <TextInput style={styles.input} />
+              <TextInput
+                style={styles.input}
+                value={phone}
+                keyboardType="number-pad"
+                onChangeText={e => setPhone(e)}
+              />
             </View>
             <View style={{paddingBottom: 10}}>
               <Text style={styles.label}>Address</Text>
-              <TextInput style={styles.input} />
+              <TextInput
+                style={styles.input}
+                value={address}
+                onChangeText={e => setAddres(e)}
+              />
             </View>
             <View style={{paddingBottom: 10}}>
               <Text style={styles.label}>City</Text>
-              <TextInput style={styles.input} />
+              <TextInput
+                style={styles.input}
+                value={city}
+                onChangeText={e => setCity(e)}
+              />
             </View>
             <View style={{paddingBottom: 10}}>
               <Text style={styles.label}>State</Text>
@@ -89,14 +127,22 @@ const Book = () => {
             </View>
             <View style={{paddingBottom: 10}}>
               <Text style={styles.label}>Zip code</Text>
-              <TextInput style={styles.input} />
+              <TextInput
+                style={styles.input}
+                value={zip}
+                onChangeText={e => setZip(e)}
+              />
             </View>
             <View style={{paddingBottom: 10}}>
               <Text style={styles.label}>Organization</Text>
-              <TextInput style={styles.input} />
+              <TextInput
+                style={styles.input}
+                value={organization}
+                onChangeText={e => setOrganization(e)}
+              />
             </View>
-            <Button text="Save for later" />
-            <Button text="Make payment" />
+            <Button text="Save for later" action={later} />
+            <Button text="Make payment" action={payment} />
           </SafeAreaView>
         </View>
       </ScrollView>

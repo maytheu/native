@@ -118,12 +118,13 @@ const Home = () => {
     const data = [...form];
     setShowTime(Platform.OS === 'ios');
     if (mode === 'date') {
-      const currentDate = selectedDate || new Date();
+      const currentDate = selectedDate.nativeEvent.timestamp;
       setDate(currentDate);
       setMode('time');
       setShowTime(Platform.OS === 'ios');
     } else {
-      const currentDate = selectedDate || new Date();
+      const currentDate = selectedDate.nativeEvent.timestamp;
+      console.log(new Date(), 'date object');
       setMode('date');
       const inputDate = `${dates.getFullYear()}/${
         dates.getMonth() + 1
@@ -139,9 +140,11 @@ const Home = () => {
     const data = [...form];
     data[i][id] = '';
     if (id === 'departure') {
+      setDeparture('');
       setDepartureResult(false);
       setToggleDeparture(false);
     } else {
+      setArrival('');
       setArrivalResult(false);
       setToggleArrival(false);
     }
@@ -253,7 +256,6 @@ const Home = () => {
         Alert.alert('Error', 'Incomplete data', [{text: 'ok'}]);
       }
     });
-    // navigation('/quote', {state: form});
   };
 
   return (
@@ -263,142 +265,58 @@ const Home = () => {
         <Landing />
         <View>
           <SafeAreaView>
-            <ScrollView>
-              {form.map((data, i) => (
-                <View key={i}>
-                  <Text style={styles.label}>from</Text>
-                  <View style={styles.dropdown}>
-                    <TextInput
-                      placeholder="Departure Airport"
-                      style={styles.drop}
-                      value={departure}
-                      onChangeText={e => onChangeValue(i, e, 'departure')}
-                    />
-                    <View style={styles.arrow}>
-                      {data.departure && index === i ? (
-                        data.departure.length < 3 || !departureLoading ? (
-                          <TouchableOpacity
-                            onPress={() => clearText(i, 'departure')}>
-                            <Icon
-                              name="clear"
-                              size={20}
-                              style={{paddingRight: 5}}
-                              color="rgba(19, 1, 97, 1)"
-                            />
-                          </TouchableOpacity>
-                        ) : (
-                          <ActivityIndicator
-                            size="large"
+            {form.map((data, i) => (
+              <View key={i}>
+                <Text style={styles.label}>from</Text>
+                <View style={styles.dropdown}>
+                  <TextInput
+                    placeholder="Departure Airport"
+                    style={styles.drop}
+                    value={departure}
+                    onChangeText={e => onChangeValue(i, e, 'departure')}
+                  />
+                  <View style={styles.arrow}>
+                    {data.departure && index === i ? (
+                      data.departure.length < 3 || !departureLoading ? (
+                        <TouchableOpacity
+                          onPress={() => clearText(i, 'departure')}>
+                          <Icon
+                            name="clear"
+                            size={20}
+                            style={{paddingRight: 5}}
                             color="rgba(19, 1, 97, 1)"
                           />
-                        )
+                        </TouchableOpacity>
                       ) : (
-                        <Text />
-                      )}
-                      <TouchableOpacity
-                        onPress={() => onToggle(i, 'departure')}>
-                        <Icon
-                          name={
-                            !toggleDeparture ? 'expand-more' : 'expand-less'
-                          }
-                          size={30}
+                        <ActivityIndicator
+                          size="large"
+                          color="rgba(19, 1, 97, 1)"
                         />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                  {departureRessult && index === i ? (
-                    departureLoading ? (
-                      <View style={{position: 'relative'}}>
-                        <Text style={styles.viewAirport}>loading airport</Text>
-                      </View>
+                      )
                     ) : (
-                      <View style={{position: 'relative'}}>
-                        {departureRessult &&
-                        index === i &&
-                        departureAirport.length > 0 ? (
-                          <View style={styles.viewAirport}>
-                            {departureAirport.map((airport, id) => {
-                              return (
-                                <TouchableOpacity
-                                  key={id}
-                                  style={{padding: 5}}
-                                  onPress={() =>
-                                    resultHandler(
-                                      i,
-                                      airport.name + '-' + airport.country,
-                                      'departure',
-                                      airport.name,
-                                    )
-                                  }>
-                                  <Text style={{fontSize: 14}}>
-                                    {airport.name}
-                                  </Text>
-                                  <Text style={{fontSize: 10}}>
-                                    {airport.country}
-                                  </Text>
-                                </TouchableOpacity>
-                              );
-                            })}
-                          </View>
-                        ) : (
-                          <Text style={styles.viewAirport}>
-                            We could not find an airport with the keyword
-                          </Text>
-                        )}
-                      </View>
-                    )
+                      <Text />
+                    )}
+                    <TouchableOpacity onPress={() => onToggle(i, 'departure')}>
+                      <Icon
+                        name={!toggleDeparture ? 'expand-more' : 'expand-less'}
+                        size={30}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                {departureRessult && index === i ? (
+                  departureLoading ? (
+                    <View style={{position: 'relative'}}>
+                      <Text style={styles.viewAirport}>loading airport</Text>
+                    </View>
                   ) : (
-                    <Text />
-                  )}
-                  <Text style={styles.label}>to</Text>
-                  <View style={styles.dropdown}>
-                    <TextInput
-                      placeholder="Arrival Airport"
-                      style={styles.drop}
-                      value={arrival}
-                      onChangeText={e => onChangeValue(i, e, 'arrival')}
-                    />
-                    <View style={styles.arrow}>
-                      {data.arrival && index === i ? (
-                        data.arrival.length < 3 || !arrivalLoading ? (
-                          <TouchableOpacity
-                            onPress={() => clearText(i, 'arrival')}>
-                            <Icon
-                              name="clear"
-                              size={20}
-                              style={{paddingRight: 5}}
-                              color="rgba(19, 1, 97, 1)"
-                            />
-                          </TouchableOpacity>
-                        ) : (
-                          <ActivityIndicator
-                            size="large"
-                            color="rgba(19, 1, 97, 1)"
-                          />
-                        )
-                      ) : (
-                        <Text />
-                      )}
-                      <TouchableOpacity onPress={() => onToggle(i, 'arrival')}>
-                        <Icon
-                          name={!toggleArrival ? 'expand-more' : 'expand-less'}
-                          size={30}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                  {arrivalResult && index === i ? (
-                    arrivalLoading ? (
-                      <View style={{position: 'relative'}}>
-                        <Text style={styles.viewAirport}>loading airport</Text>
-                      </View>
-                    ) : (
-                      <View style={{position: 'relative'}}>
-                        {arrivalResult &&
-                        index === i &&
-                        arrivalAirport.length > 0 ? (
-                          <View style={styles.viewAirport}>
-                            {arrivalAirport.map((airport, id) => (
+                    <View style={{position: 'relative'}}>
+                      {departureRessult &&
+                      index === i &&
+                      departureAirport.length > 0 ? (
+                        <View style={styles.viewAirport}>
+                          {departureAirport.map((airport, id) => {
+                            return (
                               <TouchableOpacity
                                 key={id}
                                 style={{padding: 5}}
@@ -406,7 +324,7 @@ const Home = () => {
                                   resultHandler(
                                     i,
                                     airport.name + '-' + airport.country,
-                                    'arrival',
+                                    'departure',
                                     airport.name,
                                   )
                                 }>
@@ -417,82 +335,163 @@ const Home = () => {
                                   {airport.country}
                                 </Text>
                               </TouchableOpacity>
-                            ))}
-                          </View>
-                        ) : (
-                          <Text style={styles.viewAirport}>
-                            We could not find an airport with the keyword
-                          </Text>
-                        )}
-                      </View>
-                    )
-                  ) : (
-                    <Text />
-                  )}
-                  <View style={styles.datePass}>
-                    <View style={styles.dateView}>
-                      <Text style={styles.label}>date</Text>
-                      <TouchableOpacity onPress={() => showDate()}>
-                        <TextInput
-                          placeholder={
-                            mode === 'date' ? 'Select date' : 'Select time'
-                          }
-                          style={styles.input}
-                          value={showInputDate}
-                          editable={false}
-                        />
-                      </TouchableOpacity>
-                      {showTime && (
-                        <DateTimePicker
-                          display="spinner"
-                          value={startDate}
-                          minimumDate={startDate}
-                          mode={mode}
-                          onChange={() => changeDate(i)}
-                        />
+                            );
+                          })}
+                        </View>
+                      ) : (
+                        <Text style={styles.viewAirport}>
+                          We could not find an airport with the keyword
+                        </Text>
                       )}
                     </View>
-                    <View style={styles.passengerView}>
-                      <Text style={styles.label}>passengers</Text>
-                      <TextInput
-                        onChangeText={e => onChangeValue(i, e, 'passenger')}
-                        keyboardType="number-pad"
-                        style={styles.input}
-                        value={data.passenger}
-                      />
-                    </View>
-                  </View>
-                  {i > 0 && (
-                    <TouchableOpacity onPress={() => onCancel(i)}>
+                  )
+                ) : (
+                  <Text />
+                )}
+                <Text style={styles.label}>to</Text>
+                <View style={styles.dropdown}>
+                  <TextInput
+                    placeholder="Arrival Airport"
+                    style={styles.drop}
+                    value={arrival}
+                    onChangeText={e => onChangeValue(i, e, 'arrival')}
+                  />
+                  <View style={styles.arrow}>
+                    {data.arrival && index === i ? (
+                      data.arrival.length < 3 || !arrivalLoading ? (
+                        <TouchableOpacity
+                          onPress={() => clearText(i, 'arrival')}>
+                          <Icon
+                            name="clear"
+                            size={20}
+                            style={{paddingRight: 5}}
+                            color="rgba(19, 1, 97, 1)"
+                          />
+                        </TouchableOpacity>
+                      ) : (
+                        <ActivityIndicator
+                          size="large"
+                          color="rgba(19, 1, 97, 1)"
+                        />
+                      )
+                    ) : (
+                      <Text />
+                    )}
+                    <TouchableOpacity onPress={() => onToggle(i, 'arrival')}>
                       <Icon
-                        name="clear"
+                        name={!toggleArrival ? 'expand-more' : 'expand-less'}
                         size={30}
-                        color="rgba(19, 1, 97, 1)"
-                        style={styles.remove}
                       />
                     </TouchableOpacity>
-                  )}
+                  </View>
                 </View>
-              ))}
-            </ScrollView>
+                {arrivalResult && index === i ? (
+                  arrivalLoading ? (
+                    <View style={{position: 'relative'}}>
+                      <Text style={styles.viewAirport}>loading airport</Text>
+                    </View>
+                  ) : (
+                    <View style={{position: 'relative'}}>
+                      {arrivalResult &&
+                      index === i &&
+                      arrivalAirport.length > 0 ? (
+                        <View style={styles.viewAirport}>
+                          {arrivalAirport.map((airport, id) => (
+                            <TouchableOpacity
+                              key={id}
+                              style={{padding: 5}}
+                              onPress={() =>
+                                resultHandler(
+                                  i,
+                                  airport.name + '-' + airport.country,
+                                  'arrival',
+                                  airport.name,
+                                )
+                              }>
+                              <Text style={{fontSize: 14}}>{airport.name}</Text>
+                              <Text style={{fontSize: 10}}>
+                                {airport.country}
+                              </Text>
+                            </TouchableOpacity>
+                          ))}
+                        </View>
+                      ) : (
+                        <Text style={styles.viewAirport}>
+                          We could not find an airport with the keyword
+                        </Text>
+                      )}
+                    </View>
+                  )
+                ) : (
+                  <Text />
+                )}
+                <View style={styles.datePass}>
+                  <View style={styles.dateView}>
+                    <Text style={styles.label}>date</Text>
+                    <TouchableOpacity onPress={() => showDate()}>
+                      <TextInput
+                        placeholder={
+                          mode === 'date' ? 'Select date' : 'Select time'
+                        }
+                        style={styles.input}
+                        value={showInputDate}
+                        editable={false}
+                      />
+                    </TouchableOpacity>
+                    {showTime && (
+                      <DateTimePicker
+                        display="spinner"
+                        value={startDate}
+                        minimumDate={startDate}
+                        mode={mode}
+                        onChange={e => changeDate(i, e)}
+                      />
+                    )}
+                  </View>
+                  <View style={styles.passengerView}>
+                    <Text style={styles.label}>passengers</Text>
+                    <TextInput
+                      onChangeText={e => onChangeValue(i, e, 'passenger')}
+                      keyboardType="number-pad"
+                      style={styles.input}
+                      value={data.passenger}
+                    />
+                  </View>
+                </View>
+                {i > 0 && (
+                  <TouchableOpacity onPress={() => onCancel(i)}>
+                    <Icon
+                      name="clear"
+                      size={30}
+                      color="rgba(19, 1, 97, 1)"
+                      style={styles.remove}
+                    />
+                  </TouchableOpacity>
+                )}
+              </View>
+            ))}
+            {requirement && (
+              <TextInput
+                placeholder="requirement"
+                multiline
+                numberOfLines={4}
+                style={styles.input}
+                onChangeText={val => setRequirementText(val)}
+              />
+            )}
+            <Button text="add return ticket" img="undo" action={newForm} />
+            <Button
+              text="add requirement"
+              img="star"
+              action={showRequirement}
+            />
+            {loading ? (
+              <ActivityIndicator size="large" color="rgba(19, 1, 97, 1)" />
+            ) : (
+              <Button text="book now" action={submit} />
+            )}
           </SafeAreaView>
         </View>
-        {requirement && (
-          <TextInput
-            placeholder="requirement"
-            multiline
-            numberOfLines={4}
-            style={styles.input}
-            onChangeText={val => setRequirementText(val)}
-          />
-        )}
-        <Button text="add return ticket" img="undo" action={newForm} />
-        <Button text="add requirement" img="star" action={showRequirement} />
-        {loading ? (
-          <ActivityIndicator size="large" color="rgba(19, 1, 97, 1)" />
-        ) : (
-          <Button text="book now" action={submit} />
-        )}
       </ScrollView>
     </View>
   );
