@@ -15,6 +15,7 @@
     "pod-install": "0.1.28",
     "react": "17.0.2",
     "react-native": "0.66.2",
+    "react-native-dropdown-picker": "5.2.3",
     "react-native-vector-icons": "9.0.0",
     "react-router-native": "6.0.2"
   },

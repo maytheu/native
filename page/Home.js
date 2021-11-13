@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -24,14 +24,19 @@ const API_URL = 'https://book.myphoenixng.com/api/';
 
 const Home = () => {
   const [form, setForm] = useState([
-    {departure: '', arrival: '', date: '', dates: '', passenger: '2'},
+    {
+      departure: '',
+      arrival: '',
+      date: new Date(),
+      dates: '',
+      passenger: '2',
+      departureInput: '',
+      arrivalInput: '',
+    },
   ]);
   const [startDate, setStartDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [dates, setDate] = useState('');
-  const [departure, setDeparture] = useState('');
-  const [arrival, setArrival] = useState('');
-  const [showInputDate, setShowInputDate] = useState('');
   const [requirement, setRequirement] = useState(false);
   const [requirementText, setRequirementText] = useState('');
   const [showTime, setShowTime] = useState(false);
@@ -51,7 +56,15 @@ const Home = () => {
   const newForm = () => {
     setForm([
       ...form,
-      {arrival: '', departure: '', dates: '', date: '', passenger: '2'},
+      {
+        arrival: '',
+        departure: '',
+        dates: '',
+        date: new Date(),
+        passenger: '2',
+        departureInput: '',
+        arrivalInput: '',
+      },
     ]);
   };
 
@@ -69,11 +82,10 @@ const Home = () => {
     const data = [...form];
     setIndex(i);
     data[i][id] = val;
-    if (id === 'departure') {
+    if (id === 'departureInput') {
       setDepartureResult(true);
       setToggleDeparture(true);
       setDepartureLoading(true);
-      setDeparture(val);
       if (val.length >= 3) {
         axios
           .get(`${API_URL}user/airport?value=${val}`)
@@ -87,11 +99,10 @@ const Home = () => {
       }
     }
 
-    if (id === 'arrival') {
+    if (id === 'arrivalInput') {
       setArrivalResult(true);
       setToggleArrival(true); //toggle state
       setArrivalLoading(true);
-      setArrival(val);
       if (val.length >= 3) {
         axios
           .get(`${API_URL}user/airport?value=${val}`)
@@ -118,21 +129,19 @@ const Home = () => {
     const data = [...form];
     setShowTime(Platform.OS === 'ios');
     if (mode === 'date') {
-      const currentDate = selectedDate.nativeEvent.timestamp;
+      const currentDate = selectedDate;
       setDate(currentDate);
       setMode('time');
       setShowTime(Platform.OS === 'ios');
     } else {
-      const currentDate = selectedDate.nativeEvent.timestamp;
-      console.log(new Date(), 'date object');
-      setMode('date');
+      const currentDate = selectedDate;
       const inputDate = `${dates.getFullYear()}/${
         dates.getMonth() + 1
       }/${dates.getDate()} ${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`;
-      data[i]['dates'] = inputDate;
-      data[i]['date'] = new Date(inputDate);
-      setShowInputDate(inputDate);
-      // setForm(inputDate)
+      data[index]['dates'] = inputDate;
+      data[index]['date'] = new Date(inputDate);
+      setForm(data);
+      setMode('date');
     }
   };
 
@@ -140,11 +149,9 @@ const Home = () => {
     const data = [...form];
     data[i][id] = '';
     if (id === 'departure') {
-      setDeparture('');
       setDepartureResult(false);
       setToggleDeparture(false);
     } else {
-      setArrival('');
       setArrivalResult(false);
       setToggleArrival(false);
     }
@@ -185,18 +192,19 @@ const Home = () => {
 
   const resultHandler = (i, airport, id, name) => {
     const data = [...form];
-    data[i][id] = airport;
-    if (id === 'departure') {
+    if (id === 'departureInput') {
       setDepartureLoading(false);
       setToggleDeparture(false);
       setDepartureResult(false);
-      setDeparture(name);
+      data[i][id] = name;
+      data[i]['departure'] = airport;
     }
-    if (id === 'arrival') {
+    if (id === 'arrivalInput') {
       setArrivalLoading(false);
       setToggleArrival(false);
       setArrivalResult(false);
-      setArrival(name);
+      data[i][id] = name;
+      data[i]['arrival'] = airport;
     }
     setForm(data);
   };
@@ -213,6 +221,14 @@ const Home = () => {
       ) {
         let arrivalCountry = data.arrival.split(',');
         let departureCountry = data.departure.split(',');
+        if (arrivalCountry.length === 1 || departureCountry.length === 1) {
+          setLoading(false);
+          return Alert.alert(
+            'Airport not selected',
+            'Please select a valid airport from the dropdown',
+            [{text: 'ok'}],
+          );
+        }
         if (
           departureCountry[departureCountry - 1] !==
           arrivalCountry[arrivalCountry - 1]
@@ -246,7 +262,7 @@ const Home = () => {
             })
             .catch(() => {
               setLoading(false);
-              Alert.alert('Error', 'Cannot load data at the moment', [
+              Alert.alert('Network Error', 'Cannot load data at the moment', [
                 {text: 'ok'},
               ]);
             });
@@ -272,14 +288,14 @@ const Home = () => {
                   <TextInput
                     placeholder="Departure Airport"
                     style={styles.drop}
-                    value={departure}
-                    onChangeText={e => onChangeValue(i, e, 'departure')}
+                    value={data.departureInput}
+                    onChangeText={e => onChangeValue(i, e, 'departureInput')}
                   />
                   <View style={styles.arrow}>
-                    {data.departure && index === i ? (
-                      data.departure.length < 3 || !departureLoading ? (
+                    {data.departureInput && index === i ? (
+                      data.departureInput.length < 3 || !departureLoading ? (
                         <TouchableOpacity
-                          onPress={() => clearText(i, 'departure')}>
+                          onPress={() => clearText(i, 'departureInput')}>
                           <Icon
                             name="clear"
                             size={20}
@@ -296,7 +312,8 @@ const Home = () => {
                     ) : (
                       <Text />
                     )}
-                    <TouchableOpacity onPress={() => onToggle(i, 'departure')}>
+                    <TouchableOpacity
+                      onPress={() => onToggle(i, 'departureInput')}>
                       <Icon
                         name={!toggleDeparture ? 'expand-more' : 'expand-less'}
                         size={30}
@@ -324,7 +341,7 @@ const Home = () => {
                                   resultHandler(
                                     i,
                                     airport.name + '-' + airport.country,
-                                    'departure',
+                                    'departureInput',
                                     airport.name,
                                   )
                                 }>
@@ -353,14 +370,14 @@ const Home = () => {
                   <TextInput
                     placeholder="Arrival Airport"
                     style={styles.drop}
-                    value={arrival}
-                    onChangeText={e => onChangeValue(i, e, 'arrival')}
+                    value={data.arrivalInput}
+                    onChangeText={e => onChangeValue(i, e, 'arrivalInput')}
                   />
                   <View style={styles.arrow}>
-                    {data.arrival && index === i ? (
-                      data.arrival.length < 3 || !arrivalLoading ? (
+                    {data.arrivalInput && index === i ? (
+                      data.arrivalInput.length < 3 || !arrivalLoading ? (
                         <TouchableOpacity
-                          onPress={() => clearText(i, 'arrival')}>
+                          onPress={() => clearText(i, 'arrivalInput')}>
                           <Icon
                             name="clear"
                             size={20}
@@ -377,7 +394,8 @@ const Home = () => {
                     ) : (
                       <Text />
                     )}
-                    <TouchableOpacity onPress={() => onToggle(i, 'arrival')}>
+                    <TouchableOpacity
+                      onPress={() => onToggle(i, 'arrivalInput')}>
                       <Icon
                         name={!toggleArrival ? 'expand-more' : 'expand-less'}
                         size={30}
@@ -404,7 +422,7 @@ const Home = () => {
                                 resultHandler(
                                   i,
                                   airport.name + '-' + airport.country,
-                                  'arrival',
+                                  'arrivalInput',
                                   airport.name,
                                 )
                               }>
@@ -434,19 +452,10 @@ const Home = () => {
                           mode === 'date' ? 'Select date' : 'Select time'
                         }
                         style={styles.input}
-                        value={showInputDate}
+                        value={data.dates}
                         editable={false}
                       />
                     </TouchableOpacity>
-                    {showTime && (
-                      <DateTimePicker
-                        display="spinner"
-                        value={startDate}
-                        minimumDate={startDate}
-                        mode={mode}
-                        onChange={e => changeDate(i, e)}
-                      />
-                    )}
                   </View>
                   <View style={styles.passengerView}>
                     <Text style={styles.label}>passengers</Text>
@@ -493,6 +502,15 @@ const Home = () => {
           </SafeAreaView>
         </View>
       </ScrollView>
+      {showTime && index !== null && (
+        <DateTimePicker
+          display="spinner"
+          value={startDate}
+          minimumDate={startDate}
+          mode={mode}
+          onChange={changeDate}
+        />
+      )}
     </View>
   );
 };

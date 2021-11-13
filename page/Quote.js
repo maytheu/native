@@ -12,7 +12,6 @@ const Quote = () => {
 
   const detailsPage = () => {
     navigate('/book', {state: form});
-    console.log(form);
   };
 
   return (
@@ -31,7 +30,7 @@ const Quote = () => {
                   ticketDate.getHours() + 3,
                 );
                 return (
-                  <View key={i}>
+                  <View key={i} style={{paddingBottom:10}}>
                     <View style={styles.firstList}>
                       <Text style={styles.title}>From</Text>
                       <Text style={styles.info}>{data.field.departure}</Text>
