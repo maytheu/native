@@ -219,6 +219,14 @@ const Home = () => {
         data.arrival !== '' &&
         data.date !== ''
       ) {
+        if (data.departure === data.arrival) {
+          setLoading(false);
+          return Alert.alert(
+            'Route Error',
+            'You cannot choose the same departure as your arrival',
+            [{text: 'ok'}],
+          );
+        }
         let arrivalCountry = data.arrival.split(',');
         let departureCountry = data.departure.split(',');
         if (arrivalCountry.length === 1 || departureCountry.length === 1) {
@@ -340,7 +348,7 @@ const Home = () => {
                                 onPress={() =>
                                   resultHandler(
                                     i,
-                                    airport.name + '-' + airport.country,
+                                    airport.name + ',' + airport.country,
                                     'departureInput',
                                     airport.name,
                                   )
@@ -421,7 +429,7 @@ const Home = () => {
                               onPress={() =>
                                 resultHandler(
                                   i,
-                                  airport.name + '-' + airport.country,
+                                  airport.name + ',' + airport.country,
                                   'arrivalInput',
                                   airport.name,
                                 )

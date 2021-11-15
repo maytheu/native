@@ -89,8 +89,8 @@ const Book = () => {
     setLoading(true);
     if (
       !last_name ||
-      first_name ||
-      email ||
+      !first_name ||
+      !email ||
       !address ||
       !phone ||
       !organization
@@ -98,6 +98,7 @@ const Book = () => {
       Alert.alert('Form Error', 'Field marked * are compulsory', [
         {text: 'ok'},
       ]);
+      setLoading(false);
     } else {
       axios
         .post(`${API_URL}user/quotas`, {user, details})
@@ -107,25 +108,26 @@ const Book = () => {
         })
         .catch(() => {
           setLoading(false);
-          Alert.alert('Error', 'Error processing data');
+          Alert.alert('Error', 'Error processing data', [{text: 'ok'}]);
         });
     }
   };
 
+
   const payment = () => {
-    // if (
-    //   !last_name ||
-    //   first_name ||
-    //   email ||
-    //   !address ||
-    //   !phone ||
-    //   !organization
-    // ) {
-    //   Alert.alert('Form Error', 'Field marked * are compulsory', [
-    //     {text: 'ok'},
-    //   ]);
-    // }
-    const data = {user};
+    if (
+      !last_name ||
+      !first_name ||
+      !email ||
+      !address ||
+      !phone ||
+      !organization
+    ) {
+      Alert.alert('Form Error', 'Field marked * are compulsory', [
+        {text: 'ok'},
+      ]);
+    }
+    const data = {user, details};
     navigate('/payment', {state: data});
   };
 
@@ -163,6 +165,7 @@ const Book = () => {
               <TextInput
                 style={styles.input}
                 value={email}
+                keyboardType="email-address"
                 onChangeText={e => setEmail(e)}
               />
             </View>
@@ -204,6 +207,7 @@ const Book = () => {
                 setOpen={setOpen}
                 setValue={setValue}
                 setItems={setStates}
+                placeholder="Select your state"
                 scrollViewProps={{
                   decelerationRate: 'fast',
                 }}
@@ -216,6 +220,7 @@ const Book = () => {
               <TextInput
                 style={styles.input}
                 value={zip}
+                keyboardType="number-pad"
                 onChangeText={e => setZip(e)}
               />
             </View>
@@ -234,7 +239,13 @@ const Book = () => {
             ) : (
               <Button text="Save for later" action={later} />
             )}
-            <Button text="Make payment" action={payment} />
+            <Button
+              text={`pay Ngn${details.reduce(
+                (a, b) => a + (b.exchange || 0),
+                0,
+              )}`}
+              action={payment}
+            />
           </SafeAreaView>
         </View>
       </ScrollView>
