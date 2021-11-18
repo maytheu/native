@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     color: 'rgba(19, 1, 97, 1)',
     textAlign: 'center',
     padding: 10,
-    fontFamily: 'Montserrat',
+    fontFamily: 'Poppins-Bold',
   },
   firstList: {
     backgroundColor: '#E5E7EB',
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     paddingLeft: 5,
     fontWeight: '600',
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-SemiBold',
   },
   info: {fontSize: 17, fontFamily: 'Poppins-Regular', flexShrink: 1},
   ret: {fontSize: 25, textAlign: 'center', padding: 5},
