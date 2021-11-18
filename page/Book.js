@@ -113,7 +113,6 @@ const Book = () => {
     }
   };
 
-
   const payment = () => {
     if (
       !last_name ||
@@ -138,7 +137,8 @@ const Book = () => {
         <View>
           <SafeAreaView>
             <Text style={styles.header}>Personal Details</Text>
-            <View style={{paddingBottom: 10}}>
+            <View
+              style={{paddingBottom: 10, paddingRight: 13, paddingLeft: 13}}>
               <Text style={styles.label}>
                 First Name <Text style={{color: 'red'}}>*</Text>
               </Text>
@@ -148,7 +148,8 @@ const Book = () => {
                 onChangeText={e => setF_name(e)}
               />
             </View>
-            <View style={{paddingBottom: 10}}>
+            <View
+              style={{paddingBottom: 10, paddingRight: 13, paddingLeft: 13}}>
               <Text style={styles.label}>
                 Last Name <Text style={{color: 'red'}}>*</Text>
               </Text>
@@ -158,7 +159,8 @@ const Book = () => {
                 onChangeText={e => setS_name(e)}
               />
             </View>
-            <View style={{paddingBottom: 10}}>
+            <View
+              style={{paddingBottom: 10, paddingRight: 13, paddingLeft: 13}}>
               <Text style={styles.label}>
                 Email <Text style={{color: 'red'}}>*</Text>
               </Text>
@@ -169,7 +171,8 @@ const Book = () => {
                 onChangeText={e => setEmail(e)}
               />
             </View>
-            <View style={{paddingBottom: 10}}>
+            <View
+              style={{paddingBottom: 10, paddingRight: 13, paddingLeft: 13}}>
               <Text style={styles.label}>
                 Phone <Text style={{color: 'red'}}>*</Text>
               </Text>
@@ -180,7 +183,8 @@ const Book = () => {
                 onChangeText={e => setPhone(e)}
               />
             </View>
-            <View style={{paddingBottom: 10}}>
+            <View
+              style={{paddingBottom: 10, paddingRight: 13, paddingLeft: 13}}>
               <Text style={styles.label}>
                 Address <Text style={{color: 'red'}}>*</Text>
               </Text>
@@ -190,7 +194,8 @@ const Book = () => {
                 onChangeText={e => setAddres(e)}
               />
             </View>
-            <View style={{paddingBottom: 10}}>
+            <View
+              style={{paddingBottom: 10, paddingRight: 13, paddingLeft: 13}}>
               <Text style={styles.label}>City</Text>
               <TextInput
                 style={styles.input}
@@ -198,7 +203,8 @@ const Book = () => {
                 onChangeText={e => setCity(e)}
               />
             </View>
-            <View style={{paddingBottom: 10}}>
+            <View
+              style={{paddingBottom: 10, paddingRight: 13, paddingLeft: 13}}>
               <Text style={styles.label}>State</Text>
               <DropDownPicker
                 open={open}
@@ -212,10 +218,11 @@ const Book = () => {
                   decelerationRate: 'fast',
                 }}
                 listMode="SCROLLVIEW"
-                style={{borderRadius: 0}}
+                style={{borderRadius: 10}}
               />
             </View>
-            <View style={{paddingBottom: 10}}>
+            <View
+              style={{paddingBottom: 10, paddingRight: 13, paddingLeft: 13}}>
               <Text style={styles.label}>Zip code</Text>
               <TextInput
                 style={styles.input}
@@ -224,7 +231,8 @@ const Book = () => {
                 onChangeText={e => setZip(e)}
               />
             </View>
-            <View style={{paddingBottom: 10}}>
+            <View
+              style={{paddingBottom: 10, paddingRight: 13, paddingLeft: 13}}>
               <Text style={styles.label}>
                 Organization <Text style={{color: 'red'}}>*</Text>
               </Text>
@@ -267,7 +275,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingLeft: 5,
   },
-  input: {borderWidth: 1, borderColor: 'rgba(19, 1, 97, 1)', fontSize: 20},
+  input: {
+    borderWidth: 1,
+    borderColor: 'rgba(19, 1, 97, 1)',
+    fontSize: 20,
+    borderRadius: 10,
+    height: 40,
+    fontSize: 13,
+  },
 });
 
 export default Book;

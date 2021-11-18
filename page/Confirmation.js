@@ -45,14 +45,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   header: {
-    fontSize: 30,
+    fontSize: 25,
     color: 'rgba(19, 1, 97, 1)',
     textAlign: 'center',
     padding: 10,
+    fontFamily: 'Montserrat',
   },
   text: {
-    fontSize: 22,
-    paddingBottom: 20,
+    fontSize: 18,
+    paddingBottom: 50,
     textAlign: 'center',
     color: 'black',
   },

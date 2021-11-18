@@ -1,5 +1,12 @@
 import React from 'react';
-import {ScrollView, Text, View, SafeAreaView, StyleSheet} from 'react-native';
+import {
+  ScrollView,
+  Dimensions,
+  Text,
+  View,
+  SafeAreaView,
+  StyleSheet,
+} from 'react-native';
 import {useLocation, useNavigate} from 'react-router-native';
 
 import Header from '../component/Header';
@@ -13,6 +20,8 @@ const Quote = () => {
   const detailsPage = () => {
     navigate('/book', {state: form});
   };
+
+  const wide = Dimensions.get('window').width;
 
   return (
     <View style={styles.container}>
@@ -30,7 +39,12 @@ const Quote = () => {
                   ticketDate.getHours() + 3,
                 );
                 return (
-                  <View key={i} style={{paddingBottom:10}}>
+                  <View
+                    key={i}
+                    style={{
+                      paddingBottom: 10,
+                      width: wide,
+                    }}>
                     <View style={styles.firstList}>
                       <Text style={styles.title}>From</Text>
                       <Text style={styles.info}>{data.field.departure}</Text>
@@ -62,7 +76,9 @@ const Quote = () => {
                     </View>
                     <View style={styles.secondList}>
                       <Text style={styles.title}>Date</Text>
-                      <Text style={styles.info}>{new Date(returnDate).toString()}</Text>
+                      <Text style={styles.info}>
+                        {new Date(returnDate).toString()}
+                      </Text>
                     </View>
                     <View style={styles.firstList}>
                       <Text style={styles.title}>Passenger</Text>
@@ -98,6 +114,7 @@ const styles = StyleSheet.create({
     color: 'rgba(19, 1, 97, 1)',
     textAlign: 'center',
     padding: 10,
+    fontFamily: 'Montserrat',
   },
   firstList: {
     backgroundColor: '#E5E7EB',
@@ -112,8 +129,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 5,
   },
-  title: {paddingRight: 10, fontSize: 22, paddingLeft: 5, fontWeight: '700'},
-  info: {fontSize: 22},
+  title: {
+    paddingRight: 10,
+    fontSize: 20,
+    paddingLeft: 5,
+    fontWeight: '600',
+    fontFamily: 'Poppins-Regular',
+  },
+  info: {fontSize: 17, fontFamily: 'Poppins-Regular', flexShrink: 1},
   ret: {fontSize: 25, textAlign: 'center', padding: 5},
 });
 

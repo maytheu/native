@@ -10,7 +10,7 @@ const Header = () => {
 };
 
 const styles = StyleSheet.create({
-  header: {backgroundColor: '#D1D5DB', padding: 10, alignItems: 'center', position:'relative'},
+  header: {backgroundColor: '#D1D5DB', padding: 5, alignItems: 'center', position:'relative'},
 });
 
 export default Header;
