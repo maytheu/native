@@ -137,7 +137,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
   },
   info: {fontSize: 17, fontFamily: 'Poppins-Regular', flexShrink: 1},
-  ret: {fontSize: 25, textAlign: 'center', padding: 5},
+  ret: {fontSize: 25, textAlign: 'center'},
 });
-
 export default Quote;

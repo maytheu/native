@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/primary_dark">
-    <!--app icon from appicon.co -->
-    <ImageView 
-    android:layout_width="match_parent" 
-    android:layout_height="match_parent" 
-    android:src="@drawable/launch_screen" 
-    android:scaleType="center" />
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/primary_dark">
+	<!-- app icon from appicon.co -->
+	<ImageView android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/launch_screen" android:scaleType="center" />
+	<TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="bottom|center_horizontal" android:text="@string/splash" android:layout_alignParentBottom="true" android:textColor="@color/primary_text" android:textSize="12sp" />
 </RelativeLayout>

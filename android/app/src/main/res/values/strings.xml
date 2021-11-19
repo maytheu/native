@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">myphoenixng</string>
+	<string name="app_name">
+		myphoenixng
+	</string>
+	<string name="splash">
+		Made With "\u2764" by Maytheu
+	</string>
 </resources>
